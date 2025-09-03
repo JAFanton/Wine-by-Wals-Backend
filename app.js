@@ -24,6 +24,9 @@ app.use("/auth", authRoutes);
 const wineRoutes = require("./routes/wine.routes");
 app.use("/wines", wineRoutes)
 
+const cartRoutes = require("./routes/cart.routes");
+app.use("/cart", cartRoutes)
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
