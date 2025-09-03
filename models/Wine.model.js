@@ -31,6 +31,10 @@ const wineSchema = new Schema(
             type: String,
             trim: true,
         },
+        imageUrl: {
+            type: String,
+            trim: true,
+        },
         price: {
             type: Number,
             required: [true, "Please input the price of the wine"],
