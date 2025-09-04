@@ -29,6 +29,11 @@ const orderSchema = new Schema({
       enum: ["pending", "processed", "shipped"],
       default: "pending",
     },
+    //To track payments
+    paid: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
