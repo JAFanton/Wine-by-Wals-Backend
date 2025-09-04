@@ -35,6 +35,24 @@ router.post("/checkout", isAuthenticated, (req, res) => {
     .catch(err => res.status(err.status || 500).json({ error: err.message || "Failed to create order" }));
 });
 
+//POST request to /orders/:id/pay, temporary stub to simulate payment. 
+// [Must replace with actual payment functionality once MVP is achieved]
+router.post("/:id/pay", isAuthenticated, (req, res) => {
+  const orderId = req.params.id;
+
+  Order.findById(orderId)
+    .then(order => {
+      if (!order) return Promise.reject({ status: 404, message: "Order not found" });
+      if (!order.user.equals(req.payload._id)) return Promise.reject({ status: 403, message: "Not authorized" });
+
+      order.paid = true;
+      order.status = "processed"; // automatically mark as processed for simplicity
+      return order.save().then(savedOrder => savedOrder.populate("items.wine"));
+    })
+    .then(order => res.status(200).json({ order }))
+    .catch(err => res.status(err.status || 500).json({ error: err.message || "Failed to process payment" }));
+});
+
 //GET request to /orders, fetch orders for the logged-in user
 router.get("/", isAuthenticated, (req, res) => {
   Order.find({ user: req.payload._id })
