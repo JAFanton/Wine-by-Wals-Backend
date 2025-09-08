@@ -81,6 +81,11 @@ router.delete("/:wineId", isAuthenticated, (req, res) => {
 // POST /cart/discount - Apply discount code
 router.post("/discount", isAuthenticated, (req, res) => {
   const { code, amount } = req.body;
+
+  if (req.payload.role !== "admin") {
+    return res.status(403).json({ message: "Access denied: Admins only." });
+  }
+
   if (!code || !amount) return res.status(400).json({ error: "Discount code and amount are required" });
 
   Cart.findOne({ user: req.payload._id })
